@@ -12,10 +12,14 @@ const WALLS: Wall[] = ['rosa', 'cobalt', 'maiz', 'cal', 'tinta'];
  * El campo `wall` de la sección (editable en el portal) manda sobre el color por defecto.
  */
 export function WallBand({ wall, className = '', children, innerRef }: { wall: Wall; className?: string; children: React.ReactNode; innerRef?: React.Ref<HTMLDivElement> }) {
-  const chosen = String(useCurrentSection()?.data?.wall || '') as Wall;
+  const data = useCurrentSection()?.data || {};
+  const chosen = String(data.wall || '') as Wall;
   const w = WALLS.includes(chosen) ? chosen : wall;
+  // Un fondo puesto en el estilo de la sección (panel de estilo del portal o Art) manda sobre la pared.
+  const st = data._style || {};
+  const custom = Boolean(st.backgroundColor || st.backgroundImage);
   return (
-    <div ref={innerRef} className={`wall wall--${w} ${className}`} data-wall={w}>
+    <div ref={innerRef} className={`wall wall--${w}${custom ? ' wall--custom' : ''}${st.textColor ? ' wall--ink-custom' : ''} ${className}`} data-wall={w}>
       <CmsContainer className="wrap">{children}</CmsContainer>
     </div>
   );

@@ -2059,3 +2059,11 @@ p {
   color: var(--ink);
   text-shadow: 0.045em 0.045em 0 var(--shade);
 }
+
+/* Fondo o texto definidos en el estilo de la sección (portal o Art): mandan sobre la pared */
+.wall--custom {
+  background: transparent;
+}
+.wall--ink-custom {
+  color: inherit;
+}
