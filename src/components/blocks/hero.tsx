@@ -26,7 +26,9 @@ function useFitThread(deps: unknown[]) {
       // offsetTop ignora el transform de la animación de entrada; el hilo es su offsetParent.
       const top = parseFloat(getComputedStyle(box).paddingTop || '0') - 1;
       for (const el of items) {
-        if (el.offsetTop >= top) break;
+        const overflowsTop = el.offsetTop < top;
+        const overflowsBottom = box.scrollHeight > box.clientHeight + 1;
+        if (!overflowsTop && !overflowsBottom) break;
         el.classList.add('bubble--gone');
       }
     };

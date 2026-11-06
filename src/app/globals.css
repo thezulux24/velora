@@ -607,15 +607,25 @@ p {
   position: relative;
   display: grid;
   justify-items: center;
-  padding-top: 104px;
+  padding-top: 124px;
 }
 .hero__stage .phone {
-  width: min(100%, 284px);
-  aspect-ratio: 9 / 18.4;
+  width: min(100%, 290px);
+  aspect-ratio: auto;
+}
+/* El teléfono de la portada toma el alto de su conversación: ni huecos ni mensajes cortados.
+   Si el equipo escribe mensajes muy largos, el hilo tiene tope y se ocultan los más viejos. */
+.hero__stage .phone__screen {
+  height: auto;
+}
+.hero__stage .chat__thread {
+  flex: none;
+  max-height: 440px;
+  padding-top: 14px;
 }
 .hero__sign {
   position: absolute;
-  top: 12px;
+  top: 8px;
   left: 50%;
   transform: translate(-50%, -6px) rotate(-3deg);
   z-index: 2;
@@ -1970,7 +1980,7 @@ p {
     min-height: 0;
   }
   .hero__stage {
-    padding-top: 104px;
+    padding-top: 124px;
   }
   .split--right .photo-frame {
     order: 0;
