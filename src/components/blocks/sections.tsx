@@ -160,8 +160,8 @@ export function Screens({ data }: CmsBlockProps) {
               </div>
               <div className="post">
                 <div className="post__head">
-                  <span className="post__ring" aria-hidden="true">
-                    <span>{String(data.postAccount || 'V').charAt(0).toUpperCase()}</span>
+                  <span className="post__ring">
+                    {data.postAvatar ? <CmsImage f="postAvatar" className="post__avatar" /> : <span aria-hidden="true">{String(data.postAccount || 'V').charAt(0).toUpperCase()}</span>}
                   </span>
                   <CmsText f="postAccount" className="post__account" />
                 </div>

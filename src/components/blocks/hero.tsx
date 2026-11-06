@@ -1,17 +1,51 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BatteryFull, Check, CheckCheck, Pause, Play, SendHorizontal, Signal, Wifi } from 'lucide-react';
 import { editAttrs } from '@latinovation/cms-client';
-import { CmsField, CmsLink, CmsList, CmsText, useCurrentSection, useGlobal } from '@latinovation/cms-client/react';
+import { CmsField, CmsImage, CmsLink, CmsList, CmsText, useCms, useCurrentSection, useGlobal } from '@latinovation/cms-client/react';
 import { WallBand, useSeen } from './common';
 
 /** Teléfono con la conversación que atiende el agente de WhatsApp (los mensajes son campos del CMS). */
+/**
+ * Como en un chat real, los mensajes más viejos se van por arriba: si no caben todos, se ocultan
+ * enteros (nunca uno cortado a la mitad). En el editor se ven todos para poder editarlos.
+ */
+function useFitThread(deps: unknown[]) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { isBuilder } = useCms();
+  useEffect(() => {
+    const box = ref.current?.querySelector<HTMLElement>('.chat__thread');
+    if (!box) return;
+    const fit = () => {
+      const items = Array.from(box.children) as HTMLElement[];
+      items.forEach((el) => el.classList.remove('bubble--gone'));
+      if (isBuilder) return;
+      // Con justify-content: flex-end el desborde va hacia arriba y no cuenta en scrollHeight:
+      // se mide la posición real del mensaje más viejo contra el borde superior del hilo.
+      // offsetTop ignora el transform de la animación de entrada; el hilo es su offsetParent.
+      const top = parseFloat(getComputedStyle(box).paddingTop || '0') - 1;
+      for (const el of items) {
+        if (el.offsetTop >= top) break;
+        el.classList.add('bubble--gone');
+      }
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(box);
+    return () => ro.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isBuilder, ...deps]);
+  return ref;
+}
+
 function ChatPhone() {
   const s = useCurrentSection();
   const name = String(s?.data?.phoneName || '');
+  const avatar = String(s?.data?.phoneAvatar || '');
+  const fitRef = useFitThread([JSON.stringify(s?.data?.messages || [])]);
   return (
-    <div className="phone" role="img" aria-label={`Conversación de WhatsApp atendida por un agente de Velora: ${name}`}>
+    <div className="phone" ref={fitRef} role="img" aria-label={`Conversación de WhatsApp atendida por un agente de Velora: ${name}`}>
       <div className="phone__screen">
         <span className="phone__island" aria-hidden="true" />
         <div className="phone__status" aria-hidden="true">
@@ -24,8 +58,8 @@ function ChatPhone() {
         </div>
         <div className="chat">
           <div className="chat__top">
-            <span className="chat__avatar" aria-hidden="true">
-              {name.charAt(0) || 'V'}
+            <span className="chat__avatar">
+              {avatar ? <CmsImage f="phoneAvatar" /> : <span aria-hidden="true">{name.charAt(0) || 'V'}</span>}
             </span>
             <span>
               <CmsText f="phoneName" className="chat__name" />

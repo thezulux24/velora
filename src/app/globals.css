@@ -5,12 +5,17 @@
  */
 
 :root {
-  --ink: var(--cms-color-tinta, var(--cms-text));
+  /* Pares que siempre contrastan, aunque el equipo elija un preset oscuro (Nocturno) o claro:
+     la tinta nunca pasa de 30 % de luminosidad y el papel nunca baja de 95 %. */
+  --ink: oklch(from var(--cms-color-tinta, var(--cms-text)) min(l, 0.3) c h);
   --rosa: var(--cms-primary);
   --cobalt: var(--cms-secondary);
   --maiz: var(--cms-color-amarillo-maiz, var(--cms-surface-alt));
   --cal: var(--cms-bg);
-  --paper: var(--cms-surface);
+  --paper: oklch(from var(--cms-surface) max(l, 0.95) min(c, 0.03) h);
+  --muted-ink: color-mix(in oklab, var(--ink) 68%, var(--paper));
+  /* papel un tono más gris (fondos internos de pantallas y tarjetas) */
+  --paper-alt: color-mix(in oklab, var(--ink) 7%, var(--paper));
   --stamp: var(--cms-accent);
   --neon-rosa: var(--cms-color-neon-rosa, var(--cms-primary));
   --neon-cian: var(--cms-color-neon-cian, #5ce1ff);
@@ -158,34 +163,30 @@ p {
 }
 
 .wall {
+  --wall-bg: var(--cal);
+  /* letra automática: casi negra si el fondo es claro, casi blanca si es oscuro */
+  --wall-fg: oklch(from var(--wall-bg) clamp(0.16, calc((0.66 - l) * 1000), 0.98) 0.012 70);
+  --wall-shade: oklch(from var(--wall-bg) clamp(0.16, calc((l - 0.66) * 1000), 0.98) 0.012 70);
   position: relative;
   padding-block: var(--sy);
   isolation: isolate;
+  background: var(--wall-bg);
+  color: var(--wall-fg);
 }
 .wall--rosa {
-  --shade: var(--ink);
-  background: var(--rosa);
-  color: var(--cms-primary-text);
+  --wall-bg: var(--rosa);
 }
 .wall--cobalt {
-  --shade: var(--ink);
-  background: var(--cobalt);
-  color: var(--cms-secondary-text);
+  --wall-bg: var(--cobalt);
 }
 .wall--maiz {
-  --shade: var(--paper);
-  background: var(--maiz);
-  color: var(--ink);
+  --wall-bg: var(--maiz);
 }
 .wall--cal {
-  --shade: var(--rosa);
-  background: var(--cal);
-  color: var(--ink);
+  --wall-bg: var(--cal);
 }
 .wall--tinta {
-  --shade: var(--rosa);
-  background: var(--ink);
-  color: var(--paper);
+  --wall-bg: var(--ink);
 }
 
 /* Filete de rotulista: dos líneas de 1 px al borde de cada pared */
@@ -211,7 +212,7 @@ p {
 }
 /* Sombra de rotulista en cada título de pared */
 .wall h2 {
-  text-shadow: 0.05em 0.05em 0 var(--shade, var(--ink));
+  text-shadow: 0.05em 0.05em 0 var(--wall-shade, var(--ink));
 }
 .lede {
   font-size: clamp(1.05rem, 1.4vw, 1.25rem);
@@ -223,12 +224,12 @@ p {
   color: color-mix(in oklab, currentColor 82%, transparent);
 }
 
-/* Titular rotulado: letra plena con sombra de rotulista */
+/* Titular rotulado: letra con filete interior y sombra de rotulista */
 .lettered {
-  color: var(--paper);
+  color: inherit;
   text-shadow:
-    0.045em 0.045em 0 var(--ink),
-    0.09em 0.09em 0 color-mix(in oklab, var(--ink) 35%, transparent);
+    0.045em 0.045em 0 var(--wall-shade, var(--ink)),
+    0.09em 0.09em 0 color-mix(in oklab, var(--wall-shade, var(--ink)) 35%, transparent);
 }
 
 /* ───────────── botones: placas esmaltadas ───────────── */
@@ -743,7 +744,7 @@ p {
 
 /* chat */
 .chat {
-  --chat-bg: color-mix(in oklab, var(--cal) 70%, var(--paper));
+  --chat-bg: var(--paper-alt);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -762,6 +763,7 @@ p {
   width: 36px;
   height: 36px;
   border-radius: 50%;
+  overflow: hidden;
   display: grid;
   place-items: center;
   background: var(--maiz);
@@ -791,6 +793,7 @@ p {
   background: currentColor;
 }
 .chat__thread {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -801,12 +804,23 @@ p {
   list-style: none;
   overflow: hidden;
 }
+.chat__avatar img,
+.post__ring img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.bubble--gone {
+  display: none !important;
+}
 .bubble {
-  max-width: 84%;
-  padding: 8px 11px 6px;
+  flex: none;
+  max-width: 86%;
+  padding: 7px 10px 5px;
   border-radius: 14px;
-  font-size: 0.84rem;
-  line-height: 1.38;
+  font-size: 0.8rem;
+  line-height: 1.34;
   box-shadow: 0 1px 1px rgb(0 0 0 / 0.08);
   animation: bubble-in 420ms var(--ease-out) both;
   animation-delay: calc(var(--i, 0) * 900ms + 500ms);
@@ -828,7 +842,7 @@ p {
   gap: 3px;
   margin-top: 2px;
   font-size: 0.66rem;
-  color: var(--cms-muted);
+  color: var(--muted-ink);
 }
 .bubble__time svg {
   width: 13px;
@@ -852,7 +866,7 @@ p {
   padding: 9px 14px;
   border-radius: 999px;
   background: var(--paper);
-  color: var(--cms-muted);
+  color: var(--muted-ink);
   font-size: 0.8rem;
 }
 .chat__send {
@@ -1012,6 +1026,11 @@ p {
   gap: clamp(16px, 2.4vw, 28px);
   align-items: stretch;
 }
+.browser,
+.panel,
+.phone__screen {
+  color: var(--ink);
+}
 .browser {
   grid-column: span 8;
   border-radius: var(--cms-radius-lg, 22px);
@@ -1028,7 +1047,7 @@ p {
   gap: 12px;
   padding: 12px 16px;
   border-bottom: var(--line) solid var(--ink);
-  background: var(--cal);
+  background: var(--paper-alt);
 }
 .browser__dots {
   display: flex;
@@ -1059,7 +1078,7 @@ p {
   background: var(--paper);
   border: var(--hair) solid color-mix(in oklab, var(--ink) 20%, transparent);
   font-size: 0.82rem;
-  color: var(--cms-muted);
+  color: var(--muted-ink);
   min-width: 0;
 }
 .browser__url svg {
@@ -1089,7 +1108,7 @@ p {
   line-height: 1.02;
 }
 .browser__copy p {
-  color: var(--cms-muted);
+  color: var(--muted-ink);
   max-width: 34ch;
 }
 .browser__cta {
@@ -1133,7 +1152,7 @@ p {
   gap: 8px;
   padding: 7px 14px;
   border-radius: 999px;
-  border: var(--hair) solid var(--ink);
+  border: var(--hair) solid currentColor;
   font-size: 0.86rem;
   font-weight: 600;
 }
@@ -1168,6 +1187,9 @@ p {
   border-radius: 50%;
   padding: 2px;
   background: conic-gradient(var(--rosa), var(--maiz), var(--rosa));
+}
+.post__ring img {
+  border: 2px solid var(--paper);
 }
 .post__ring span {
   display: grid;
@@ -1261,7 +1283,7 @@ p {
 .panel__meta {
   font-size: 0.84rem;
   font-weight: 600;
-  color: var(--cms-muted);
+  color: var(--muted-ink);
 }
 .metrics {
   display: grid;
@@ -1276,12 +1298,12 @@ p {
   gap: 6px;
   padding: 14px;
   border-radius: var(--cms-radius-md);
-  background: var(--cal);
+  background: var(--paper-alt);
 }
 .metric__label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--cms-muted);
+  color: var(--muted-ink);
 }
 .metric__value {
   font-family: var(--display);
@@ -1347,7 +1369,7 @@ p {
   border-bottom: var(--hair) dashed color-mix(in oklab, var(--ink) 30%, transparent);
 }
 .report__row dt {
-  color: var(--cms-muted);
+  color: var(--muted-ink);
   font-weight: 500;
 }
 .report__row dd {
@@ -1701,7 +1723,7 @@ p {
 }
 .field__help {
   font-size: 0.84rem;
-  color: var(--cms-muted);
+  color: var(--muted-ink);
 }
 .field--check {
   grid-column: 1 / -1;
@@ -2053,16 +2075,11 @@ p {
   list-style: none;
 }
 
-/* Titular rotulado sobre paredes claras: letra en tinta con sombra de color */
-.wall--cal .lettered,
-.wall--maiz .lettered {
-  color: var(--ink);
-  text-shadow: 0.045em 0.045em 0 var(--shade);
-}
 
 /* Fondo o texto definidos en el estilo de la sección (portal o Art): mandan sobre la pared */
 .wall--custom {
   background: transparent;
+  color: inherit;
 }
 .wall--ink-custom {
   color: inherit;
