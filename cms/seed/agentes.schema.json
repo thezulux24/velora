@@ -1,0 +1,9 @@
+[
+  { "key": "role", "label": "Rol del agente", "type": "text", "required": true },
+  { "key": "summary", "label": "Qué hace (resumen)", "type": "textarea" },
+  { "key": "tasks", "label": "Tareas", "type": "array", "fields": [{ "key": "text", "label": "Tarea", "type": "text" }] },
+  { "key": "deliverable", "label": "Lo que entrega", "type": "text" },
+  { "key": "rhythm", "label": "Ritmo de trabajo", "type": "text" },
+  { "key": "signColor", "label": "Color del letrero", "type": "select", "options": [{ "value": "rosa", "label": "Rosa" }, { "value": "amarillo", "label": "Amarillo" }, { "value": "cian", "label": "Cian" }, { "value": "blanco", "label": "Blanco" }] },
+  { "key": "icon", "label": "Ícono", "type": "select", "options": [{ "value": "megaphone", "label": "Megáfono" }, { "value": "target", "label": "Diana" }, { "value": "message", "label": "Mensaje" }, { "value": "globe", "label": "Sitio web" }, { "value": "chart", "label": "Gráfica" }, { "value": "sparkles", "label": "Destellos" }, { "value": "camera", "label": "Cámara" }, { "value": "mail", "label": "Correo" }] }
+]

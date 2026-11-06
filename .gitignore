@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+.impeccable/questions
+.impeccable/review
+.impeccable/live
+.taste-skill
+shots
+.impeccable/ref
+.impeccable/direction-payload.json
+cms/*.snapshot.json
+cms/*.types.d.ts
+.impeccable/brief-body.md
+.env
