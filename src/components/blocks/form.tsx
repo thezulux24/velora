@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { CircleAlert, CircleCheck, Check } from 'lucide-react';
+import { editAttrs } from '@latinovation/cms-client';
 import { CmsLink, CmsList, CmsText, useCurrentSection, type CmsBlockProps } from '@latinovation/cms-client/react';
 import { WallBand, listOf, sendLead, useReveal, useSeen } from './common';
 
@@ -79,7 +80,7 @@ export function LeadForm({ data }: CmsBlockProps) {
     <WallBand wall="rosa">
       <div className="lead">
         <div className={`lead__aside${lit ? ' is-lit' : ''}`} ref={ref}>
-          <div className="sign">
+          <div className="sign" {...editAttrs({ field: 'neonColor', type: 'select' })}>
             <CmsText f="neonText" className="neon" data-tube={data.neonColor || 'amarillo'} />
           </div>
           <CmsText f="heading" as="h2" className="lettered" />

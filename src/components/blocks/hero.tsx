@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { BatteryFull, Check, CheckCheck, Pause, Play, SendHorizontal, Signal, Wifi } from 'lucide-react';
+import { editAttrs } from '@latinovation/cms-client';
 import { CmsField, CmsLink, CmsList, CmsText, useCurrentSection, useGlobal } from '@latinovation/cms-client/react';
 import { WallBand, useSeen } from './common';
 
@@ -111,7 +112,7 @@ export function Hero() {
             />
           </div>
           <div className={`hero__stage${lit ? ' is-lit' : ''}`} ref={ref}>
-            <div className="hero__sign sign">
+            <div className="hero__sign sign" {...editAttrs({ field: 'neonColor', type: 'select' })}>
               <CmsText f="neonText" className="neon" data-tube={s?.data?.neonColor || 'cian'} />
             </div>
             <ChatPhone />

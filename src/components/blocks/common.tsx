@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { editAttrs } from '@latinovation/cms-client';
 import { CmsContainer, CmsText, useCms, useCurrentSection } from '@latinovation/cms-client/react';
 import { CMS_SLUG, CMS_URL } from '@/lib/site';
 
@@ -19,7 +20,7 @@ export function WallBand({ wall, className = '', children, innerRef }: { wall: W
   const st = data._style || {};
   const custom = Boolean(st.backgroundColor || st.backgroundImage);
   return (
-    <div ref={innerRef} className={`wall wall--${w}${custom ? ' wall--custom' : ''}${st.textColor ? ' wall--ink-custom' : ''} ${className}`} data-wall={w}>
+    <div ref={innerRef} className={`wall wall--${w}${custom ? ' wall--custom' : ''}${st.textColor ? ' wall--ink-custom' : ''} ${className}`} data-wall={w} {...editAttrs({ field: 'wall', type: 'select' })}>
       <CmsContainer className="wrap">{children}</CmsContainer>
     </div>
   );

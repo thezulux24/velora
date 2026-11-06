@@ -19,7 +19,10 @@ function Brand() {
   return (
     <Link href="/" className="brand" aria-label={name}>
       {logo ? (
-        <CmsGlobalImage f="logoUrl" className="brand__logo" alt={name} />
+        <>
+          <CmsGlobalImage f="logoUrl" className="brand__logo" alt={name} />
+          <CmsGlobalText f="brandName" className="sr-only" />
+        </>
       ) : (
         <>
           <span className="brand__dot" aria-hidden="true" />
