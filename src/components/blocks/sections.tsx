@@ -10,6 +10,7 @@ import {
   Check,
   Globe,
   Heart,
+  Info,
   Lock,
   Mail,
   Megaphone,
@@ -241,6 +242,10 @@ export function Screens({ data }: CmsBlockProps) {
             <CmsText f="reportNote" />
           </p>
         </div>
+        <p className="screens__demo">
+          <Info aria-hidden="true" />
+          <CmsText f="demoLabel" />
+        </p>
       </div>
     </WallBand>
   );

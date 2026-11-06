@@ -84,6 +84,7 @@ function Ticker() {
 }
 
 export function Hero() {
+  const s = useCurrentSection();
   const [ref, lit] = useSeen<HTMLDivElement>(0.1);
   return (
     <>
@@ -111,7 +112,7 @@ export function Hero() {
           </div>
           <div className={`hero__stage${lit ? ' is-lit' : ''}`} ref={ref}>
             <div className="hero__sign sign">
-              <CmsText f="neonText" className="neon" data-tube="cian" />
+              <CmsText f="neonText" className="neon" data-tube={s?.data?.neonColor || 'cian'} />
             </div>
             <ChatPhone />
           </div>

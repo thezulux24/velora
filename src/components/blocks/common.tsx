@@ -1,15 +1,21 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { CmsContainer, CmsText, useCms } from '@latinovation/cms-client/react';
+import { CmsContainer, CmsText, useCms, useCurrentSection } from '@latinovation/cms-client/react';
 import { CMS_SLUG, CMS_URL } from '@/lib/site';
 
 export type Wall = 'rosa' | 'cobalt' | 'maiz' | 'cal' | 'tinta';
+const WALLS: Wall[] = ['rosa', 'cobalt', 'maiz', 'cal', 'tinta'];
 
-/** Pared pintada (fondo de sección) con su contenedor del CMS (para `contentWidth`). */
+/**
+ * Pared pintada (fondo de sección) con su contenedor del CMS (para `contentWidth`).
+ * El campo `wall` de la sección (editable en el portal) manda sobre el color por defecto.
+ */
 export function WallBand({ wall, className = '', children, innerRef }: { wall: Wall; className?: string; children: React.ReactNode; innerRef?: React.Ref<HTMLDivElement> }) {
+  const chosen = String(useCurrentSection()?.data?.wall || '') as Wall;
+  const w = WALLS.includes(chosen) ? chosen : wall;
   return (
-    <div ref={innerRef} className={`wall wall--${wall} ${className}`}>
+    <div ref={innerRef} className={`wall wall--${w} ${className}`} data-wall={w}>
       <CmsContainer className="wrap">{children}</CmsContainer>
     </div>
   );

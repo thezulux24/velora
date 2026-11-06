@@ -1,10 +1,16 @@
 import type { Metadata, Viewport } from 'next';
+import { Bungee_Hairline, Bungee_Inline } from 'next/font/google';
 import { mediaUrl } from '@latinovation/cms-client';
 import { CmsProvider } from '@latinovation/cms-client/react';
 import './globals.css';
 import { CMS_SLUG, CMS_URL, getSite, PORTAL_ORIGINS, SITE_URL } from '@/lib/site';
 import { ldScript, organizationLd } from '@/lib/seo';
 import { Footer, Header, SkipLink } from '@/components/Shell';
+
+// Capas decorativas del rótulo (tubo de neón y filete interior). Si el equipo cambia la tipografía de títulos
+// en el design system, --font-neon / --font-inline caen a ella (ver globals.css).
+const neon = Bungee_Hairline({ weight: '400', subsets: ['latin', 'latin-ext'], variable: '--font-neon-face', display: 'swap' });
+const inline = Bungee_Inline({ weight: '400', subsets: ['latin', 'latin-ext'], variable: '--font-inline-face', display: 'swap' });
 
 export const revalidate = 60;
 
@@ -18,7 +24,9 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(SITE_URL),
     title: { default: title, template: `%s · ${brand}` },
     description: seo.metaDescription || g.tagline,
-    icons: { icon: g.faviconUrl ? mediaUrl(g.faviconUrl, CMS_URL) : '/icon.svg' },
+    icons: g.faviconUrl
+      ? { icon: mediaUrl(g.faviconUrl, CMS_URL), apple: mediaUrl(g.faviconUrl, CMS_URL) }
+      : { icon: '/icon.png', apple: '/icon.png' },
     openGraph: {
       title,
       description: seo.metaDescription || g.tagline,
@@ -40,7 +48,7 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const site = await getSite();
   return (
-    <html lang="es-MX">
+    <html lang="es-MX" className={`${neon.variable} ${inline.variable}`}>
       <head>
         <link rel="preconnect" href={CMS_URL} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

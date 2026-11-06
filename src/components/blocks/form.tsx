@@ -80,7 +80,7 @@ export function LeadForm({ data }: CmsBlockProps) {
       <div className="lead">
         <div className={`lead__aside${lit ? ' is-lit' : ''}`} ref={ref}>
           <div className="sign">
-            <CmsText f="neonText" className="neon" data-tube="amarillo" />
+            <CmsText f="neonText" className="neon" data-tube={data.neonColor || 'amarillo'} />
           </div>
           <CmsText f="heading" as="h2" className="lettered" />
           <CmsText f="intro" as="p" className="lede" />

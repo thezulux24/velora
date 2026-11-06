@@ -16,6 +16,8 @@
   --neon-cian: var(--cms-color-neon-cian, #5ce1ff);
   --neon-amarillo: var(--cms-color-neon-amarillo, var(--maiz));
   --display: var(--cms-font-heading);
+  --font-neon: var(--font-neon-face), var(--cms-font-heading);
+  --font-inline: var(--font-inline-face), var(--cms-font-heading);
   --body: var(--cms-font-body);
   --gutter: clamp(16px, 4vw, var(--cms-gutter, 24px));
   --max: var(--cms-max-width, 1320px);
@@ -161,22 +163,27 @@ p {
   isolation: isolate;
 }
 .wall--rosa {
+  --shade: var(--ink);
   background: var(--rosa);
-  color: var(--ink);
+  color: var(--cms-primary-text);
 }
 .wall--cobalt {
+  --shade: var(--ink);
   background: var(--cobalt);
   color: var(--cms-secondary-text);
 }
 .wall--maiz {
+  --shade: var(--paper);
   background: var(--maiz);
   color: var(--ink);
 }
 .wall--cal {
+  --shade: var(--rosa);
   background: var(--cal);
   color: var(--ink);
 }
 .wall--tinta {
+  --shade: var(--rosa);
   background: var(--ink);
   color: var(--paper);
 }
@@ -201,6 +208,10 @@ p {
 }
 .head h2 {
   font-size: clamp(2.1rem, 4.4vw, 4rem);
+}
+/* Sombra de rotulista en cada título de pared */
+.wall h2 {
+  text-shadow: 0.05em 0.05em 0 var(--shade, var(--ink));
 }
 .lede {
   font-size: clamp(1.05rem, 1.4vw, 1.25rem);
@@ -297,10 +308,11 @@ p {
 .neon {
   --tube: var(--neon-rosa);
   display: inline-block;
-  font-family: var(--display);
+  font-family: var(--font-neon);
+  font-weight: 400;
   line-height: 1;
-  color: color-mix(in oklab, var(--paper) 26%, transparent);
-  -webkit-text-stroke: 1px color-mix(in oklab, var(--paper) 30%, transparent);
+  color: color-mix(in oklab, var(--paper) 34%, transparent);
+  -webkit-text-stroke: 0.6px color-mix(in oklab, var(--paper) 34%, transparent);
   transition:
     color 120ms ease,
     text-shadow 120ms ease;
@@ -316,13 +328,14 @@ p {
 }
 .is-lit .neon,
 .neon.is-lit {
-  color: color-mix(in oklab, var(--tube) 55%, white);
-  -webkit-text-stroke: 1px color-mix(in oklab, var(--tube) 70%, white);
+  color: color-mix(in oklab, var(--tube) 25%, white);
+  -webkit-text-stroke: 1.4px color-mix(in oklab, var(--tube) 55%, white);
   text-shadow:
-    0 0 2px color-mix(in oklab, var(--tube) 40%, white),
-    0 0 10px var(--tube),
+    0 0 2px var(--tube),
+    0 0 5px var(--tube),
+    0 0 12px var(--tube),
     0 0 24px var(--tube),
-    0 0 48px color-mix(in oklab, var(--tube) 70%, transparent);
+    0 0 44px color-mix(in oklab, var(--tube) 80%, transparent);
   animation: ignite 900ms steps(1, end) both;
   animation-delay: var(--ignite-delay, 0ms);
 }
@@ -376,7 +389,8 @@ p {
   right: 22%;
 }
 .sign .neon {
-  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  font-size: clamp(1.7rem, 2.5vw, 2.4rem);
+  white-space: nowrap;
   letter-spacing: 0.02em;
 }
 
@@ -416,8 +430,12 @@ p {
     0 0 14px var(--neon-rosa);
 }
 .brand__logo {
-  height: 36px;
+  height: 40px;
   width: auto;
+  object-fit: contain;
+}
+.footer__brand .brand__logo {
+  height: 56px;
 }
 .nav {
   display: flex;
@@ -530,9 +548,9 @@ p {
 /* ───────────── portada ───────────── */
 
 .hero {
-  padding-top: clamp(40px, 5vw, 64px);
+  padding-top: clamp(32px, 4vw, 48px);
   padding-bottom: 0;
-  min-height: calc(100svh - var(--header-h));
+  min-height: min(calc(100svh - var(--header-h) - 96px), 760px);
   display: flex;
   flex-direction: column;
 }
@@ -542,7 +560,7 @@ p {
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: clamp(32px, 5vw, 72px);
   align-items: center;
-  padding-bottom: clamp(40px, 4vw, 56px);
+  padding-bottom: clamp(32px, 3vw, 40px);
 }
 .hero__copy {
   display: grid;
@@ -550,6 +568,7 @@ p {
   align-content: center;
 }
 .hero h1 {
+  font-family: var(--font-inline);
   font-size: clamp(2.6rem, 5.6vw, 5.4rem);
   line-height: 0.98;
 }
@@ -587,10 +606,10 @@ p {
   position: relative;
   display: grid;
   justify-items: center;
-  padding-top: 112px;
+  padding-top: 104px;
 }
 .hero__stage .phone {
-  width: min(100%, 300px);
+  width: min(100%, 272px);
   aspect-ratio: 9 / 17.6;
 }
 .hero__sign {
@@ -855,7 +874,8 @@ p {
 .signs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(16px, 2.4vw, 28px);
+  gap: 0 clamp(16px, 2.4vw, 28px);
+  margin-top: -54px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -865,20 +885,39 @@ p {
   display: grid;
   gap: 18px;
   align-content: start;
-  padding: clamp(24px, 3vw, 36px);
+  margin-top: 54px;
+  padding: clamp(26px, 3vw, 40px);
   border-radius: var(--cms-radius-lg, 22px);
   background: var(--ink);
   color: var(--paper);
-  box-shadow: var(--cms-shadow-lg);
+  box-shadow:
+    inset 0 0 0 var(--hair) color-mix(in oklab, var(--paper) 18%, transparent),
+    var(--cms-shadow-lg);
   transition: transform 220ms var(--ease-out);
 }
-.agent::before {
+/* Cables del letrero colgante */
+.agent::before,
+.agent::after {
   content: '';
   position: absolute;
-  inset: 8px;
-  border: var(--hair) solid color-mix(in oklab, var(--paper) 16%, transparent);
-  border-radius: calc(var(--cms-radius-lg, 22px) - 8px);
-  pointer-events: none;
+  bottom: 100%;
+  width: var(--hair);
+  height: 54px;
+  background: color-mix(in oklab, var(--paper) 45%, transparent);
+}
+.agent::before {
+  left: 18%;
+}
+.agent::after {
+  right: 18%;
+}
+/* Una calle de letreros: los pares cuelgan más abajo */
+.agent:nth-child(even) {
+  margin-top: 118px;
+}
+.agent:nth-child(even)::before,
+.agent:nth-child(even)::after {
+  height: 118px;
 }
 @media (hover: hover) and (pointer: fine) {
   .agent:hover {
@@ -892,22 +931,16 @@ p {
   gap: 16px;
 }
 .agent__name {
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
   letter-spacing: 0.01em;
 }
 .agent__icon {
-  width: 52px;
-  height: 52px;
   flex: none;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  border: var(--hair) solid color-mix(in oklab, var(--paper) 26%, transparent);
-  color: color-mix(in oklab, var(--paper) 70%, transparent);
+  color: color-mix(in oklab, var(--paper) 60%, transparent);
 }
 .agent__icon svg {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
 }
 .agent__role {
   font-weight: 700;
@@ -1091,6 +1124,22 @@ p {
   .photo-frame:hover img {
     transform: scale(1.025);
   }
+}
+.screens__demo {
+  grid-column: 1 / -1;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: var(--hair) solid var(--ink);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+.screens__demo svg {
+  width: 16px;
+  height: 16px;
 }
 .screens__phone {
   grid-column: span 4;
@@ -1899,7 +1948,7 @@ p {
     min-height: 0;
   }
   .hero__stage {
-    padding-top: 112px;
+    padding-top: 104px;
   }
   .split--right .photo-frame {
     order: 0;
@@ -1936,6 +1985,13 @@ p {
 @media (max-width: 640px) {
   .signs {
     grid-template-columns: 1fr;
+  }
+  .agent:nth-child(even) {
+    margin-top: 54px;
+  }
+  .agent:nth-child(even)::before,
+  .agent:nth-child(even)::after {
+    height: 54px;
   }
   .steps {
     grid-template-columns: 1fr;
@@ -1995,4 +2051,11 @@ p {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* Titular rotulado sobre paredes claras: letra en tinta con sombra de color */
+.wall--cal .lettered,
+.wall--maiz .lettered {
+  color: var(--ink);
+  text-shadow: 0.045em 0.045em 0 var(--shade);
 }

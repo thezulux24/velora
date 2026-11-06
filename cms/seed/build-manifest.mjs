@@ -38,6 +38,7 @@ const t = (key, label, extra = {}) => ({ key, type: 'text', label, ...extra });
 const ta = (key, label) => ({ key, type: 'textarea', label });
 const rt = (key, label) => ({ key, type: 'richtext', label });
 const img = (key, label) => ({ key, type: 'image', label });
+
 const link = (key, label) => ({ key, type: 'link', label });
 const arr = (key, label, fields) => ({ key, type: 'array', label, fields });
 const sel = (key, label, options) => ({ key, type: 'select', label, options: options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o)) });
@@ -80,6 +81,8 @@ const hero = custom(
     arr('messages', 'Teléfono: mensajes', [sel('from', 'Quién escribe', [{ value: 'cliente', label: 'Cliente' }, { value: 'agente', label: 'Agente' }]), ta('text', 'Mensaje'), t('time', 'Hora')]),
     t('phoneInput', 'Teléfono: texto de la caja de escribir'),
     arr('ticker', 'Marquesina de servicios', [t('text', 'Servicio')]),
+    sel('wall', 'Color de la pared', [{ value: 'rosa', label: 'Rosa mexicano' }, { value: 'cobalt', label: 'Cobalto' }, { value: 'maiz', label: 'Amarillo maíz' }, { value: 'cal', label: 'Cal (claro)' }, { value: 'tinta', label: 'Tinta (oscuro)' }]),
+    sel('neonColor', 'Color del neón', [{ value: 'rosa', label: 'Rosa' }, { value: 'cian', label: 'Cian' }, { value: 'amarillo', label: 'Amarillo' }, { value: 'blanco', label: 'Blanco' }]),
   ],
   {
     headline: 'La agencia de marketing que no cierra.',
@@ -97,6 +100,8 @@ const hero = custom(
       { from: 'agente', text: 'Lista tu reserva. Tenemos pan y hot cakes sin gluten. Te mando la ubicación y un recordatorio una hora antes.', time: '23:48' },
     ],
     phoneInput: 'Escribe un mensaje',
+    wall: 'rosa',
+    neonColor: 'cian',
     ticker: [{ text: 'Contenido y redes' }, { text: 'Pauta en Meta y Google' }, { text: 'Ventas por WhatsApp' }, { text: 'Landings' }, { text: 'SEO' }, { text: 'Reportes semanales' }],
   },
   { anchorId: 'inicio' },
@@ -116,9 +121,10 @@ const agentes = block(
     paginate: false,
     tasksLabel: 'Hace',
     deliverableLabel: 'Entrega',
+    wall: 'cobalt',
     anchor: 'agentes',
   },
-  [t('tasksLabel', 'Rótulo de la lista de tareas'), t('deliverableLabel', 'Rótulo de lo que entrega')],
+  [t('tasksLabel', 'Rótulo de la lista de tareas'), t('deliverableLabel', 'Rótulo de lo que entrega'), sel('wall', 'Color de la pared', [{ value: 'rosa', label: 'Rosa mexicano' }, { value: 'cobalt', label: 'Cobalto' }, { value: 'maiz', label: 'Amarillo maíz' }, { value: 'cal', label: 'Cal (claro)' }, { value: 'tinta', label: 'Tinta (oscuro)' }])],
 );
 
 const pantalla = custom(
@@ -147,6 +153,8 @@ const pantalla = custom(
     t('reportDate', 'Reporte: fecha'),
     arr('reportItems', 'Reporte: puntos', [t('label', 'Tema'), t('value', 'Resultado')]),
     t('reportNote', 'Reporte: firma del estratega'),
+    t('demoLabel', 'Aviso de contenido de ejemplo'),
+    sel('wall', 'Color de la pared', [{ value: 'rosa', label: 'Rosa mexicano' }, { value: 'cobalt', label: 'Cobalto' }, { value: 'maiz', label: 'Amarillo maíz' }, { value: 'cal', label: 'Cal (claro)' }, { value: 'tinta', label: 'Tinta (oscuro)' }]),
   ],
   {
     heading: 'El trabajo se ve en tu teléfono.',
@@ -180,6 +188,8 @@ const pantalla = custom(
       { label: 'Próximo paso', value: 'Probar video del brunch' },
     ],
     reportNote: 'Revisado y aprobado por Andrea, tu estratega',
+    demoLabel: 'Ejemplo ilustrativo · Café Altamira es un negocio ficticio',
+    wall: 'cal',
   },
   { anchorId: 'trabajo' },
 );
@@ -199,9 +209,10 @@ const proceso = block(
     ],
     stampText: 'Aprobado',
     stampStep: '2',
+    wall: 'maiz',
     anchor: 'proceso',
   },
-  [t('stampText', 'Texto del sello'), sel('stampStep', 'Paso que lleva el sello', ['1', '2', '3', '4'])],
+  [t('stampText', 'Texto del sello'), sel('stampStep', 'Paso que lleva el sello', ['1', '2', '3', '4']), sel('wall', 'Color de la pared', [{ value: 'rosa', label: 'Rosa mexicano' }, { value: 'cobalt', label: 'Cobalto' }, { value: 'maiz', label: 'Amarillo maíz' }, { value: 'cal', label: 'Cal (claro)' }, { value: 'tinta', label: 'Tinta (oscuro)' }])],
 );
 
 const humanos = block(
@@ -213,13 +224,20 @@ const humanos = block(
     body: 'Detrás de cada cuenta hay un **estratega de Velora** que conoce tu negocio: define el tono, aprueba cada campaña y te llama cuando algo cambia.\n\nLos agentes hacen el trabajo repetitivo y rápido; las personas cuidan tu marca y tus decisiones.',
     cta: { label: 'Habla con un estratega', href: '/#diagnostico' },
     image: PH.team,
-    imageAlt: 'Equipo de estrategas de Velora trabajando con computadoras alrededor de una mesa',
+    imageAlt: 'Personas trabajando con computadoras alrededor de una mesa',
     imageSide: 'left',
     anchor: 'equipo',
+    wall: 'tinta',
   },
+  [sel('wall', 'Color de la pared', [{ value: 'rosa', label: 'Rosa mexicano' }, { value: 'cobalt', label: 'Cobalto' }, { value: 'maiz', label: 'Amarillo maíz' }, { value: 'cal', label: 'Cal (claro)' }, { value: 'tinta', label: 'Tinta (oscuro)' }])],
 );
 
-const preguntas = block('faq.accordion', 'preguntas', 'Preguntas frecuentes', {
+const preguntas = block(
+  'faq.accordion',
+  'preguntas',
+  'Preguntas frecuentes',
+  {
+  wall: 'cal',
   heading: 'Preguntas frecuentes',
   intro: 'Lo que más nos preguntan antes de empezar.',
   items: [
@@ -231,7 +249,9 @@ const preguntas = block('faq.accordion', 'preguntas', 'Preguntas frecuentes', {
     { question: '¿Cómo veo los resultados?', answer: 'Cada lunes recibes un reporte de una página con lo que se hizo, lo que funcionó y el siguiente paso. Además tienes un tablero en vivo cuando quieras revisarlo.' },
   ],
   anchor: 'preguntas',
-});
+},
+  [sel('wall', 'Color de la pared', [{ value: 'rosa', label: 'Rosa mexicano' }, { value: 'cobalt', label: 'Cobalto' }, { value: 'maiz', label: 'Amarillo maíz' }, { value: 'cal', label: 'Cal (claro)' }, { value: 'tinta', label: 'Tinta (oscuro)' }])],
+);
 
 const diagnostico = block(
   'form.custom',
@@ -256,6 +276,8 @@ const diagnostico = block(
     successMessage: '¡Listo! Recibimos tus datos. Un estratega de Velora te escribe en menos de un día hábil.',
     layout: 'split',
     neonText: 'Abierto',
+    neonColor: 'amarillo',
+    wall: 'rosa',
     asideTitle: 'En el diagnóstico recibes',
     asidePoints: [{ text: 'Una revisión de tus redes, anuncios y página' }, { text: 'Qué agentes te convienen y por qué' }, { text: 'Una propuesta con precio fijo mensual' }],
     privacyLink: { label: 'Aviso de privacidad', href: '/privacidad' },
@@ -270,6 +292,8 @@ const diagnostico = block(
     link('privacyLink', 'Enlace al aviso de privacidad'),
     t('sendingLabel', 'Botón mientras envía'),
     t('errorMessage', 'Mensaje de error'),
+    sel('wall', 'Color de la pared', [{ value: 'rosa', label: 'Rosa mexicano' }, { value: 'cobalt', label: 'Cobalto' }, { value: 'maiz', label: 'Amarillo maíz' }, { value: 'cal', label: 'Cal (claro)' }, { value: 'tinta', label: 'Tinta (oscuro)' }]),
+    sel('neonColor', 'Color del neón', [{ value: 'rosa', label: 'Rosa' }, { value: 'cian', label: 'Cian' }, { value: 'amarillo', label: 'Amarillo' }, { value: 'blanco', label: 'Blanco' }]),
   ],
 );
 
@@ -305,15 +329,27 @@ const privacidad = {
   ],
 };
 
-const pages = [home, privacidad].map((p, i) => ({ order: i, ...p, sections: p.sections.map((s, j) => ({ order: j, ...s })) }));
+// Lo que el equipo ajustó en el portal se conserva: estilos por elemento, estilo de sección y CSS propio.
+const KEEP = ['_elementStyles', '_style', '_customCss'];
+const pulled = new Map((snap.pages || []).flatMap((pg) => (pg.sections || []).map((sec) => [`${pg.slug}#${sec.key}`, sec.data || {}])));
+const keepClient = (pageSlug, sec) => {
+  const prev = pulled.get(`${pageSlug}#${sec.key}`) || {};
+  const data = { ...sec.data };
+  for (const k of KEEP) if (prev[k] !== undefined) data[k] = k === '_style' ? { ...(data._style || {}), ...prev._style } : prev[k];
+  return { ...sec, data };
+};
+const pages = [home, privacidad].map((p, i) => ({ order: i, ...p, sections: p.sections.map((s, j) => ({ order: j, ...keepClient(p.slug, s) })) }));
 
 // ───────────── globales ─────────────
 const g = (key, type, label) => ({ key, type, label });
 const globalSchema = [
   g('brandName', 'text', 'Nombre de la marca'),
   g('tagline', 'text', 'Frase de la marca (pie de página)'),
-  g('logoUrl', 'image', 'Logo (opcional; si no hay, se usa el nombre)'),
-  g('faviconUrl', 'image', 'Ícono de la pestaña (favicon)'),
+  g('logoUrl', 'image', 'Logo para fondos oscuros (cabecera y pie). Vacío = nombre de la marca'),
+  g('logoDarkUrl', 'image', 'Logo para fondos claros'),
+  g('logoStackedUrl', 'image', 'Logo apilado (marca sobre el nombre)'),
+  g('logoMarkUrl', 'image', 'Marca sola (la V)'),
+  g('faviconUrl', 'image', 'Ícono de la pestaña (favicon, la V)'),
   g('city', 'text', 'Ciudad o base'),
   g('reach', 'text', 'Alcance (pie de página)'),
   g('email', 'text', 'Correo de contacto (opcional)'),
@@ -345,10 +381,13 @@ const globalData = {
   ...(snap.globalData || {}),
   brandName: 'Velora',
   tagline: 'Agencia de marketing operada por agentes de IA y dirigida por personas.',
-  logoUrl: '',
-  faviconUrl: '',
+  logoUrl: '/uploads/media/velora-logo-h-claro-1794003898431-asj5.webp',
+  logoDarkUrl: '/uploads/media/velora-logo-h-oscuro-1794003899671-0glq.webp',
+  logoStackedUrl: '/uploads/media/velora-logo-oscuro-1794003903373-ronk.webp',
+  logoMarkUrl: '/uploads/media/velora-marca-clara-1794003904954-igwi.webp',
+  faviconUrl: '/uploads/media/velora-favicon-1794003907342-r7mh.webp',
   city: 'Ciudad de México',
-  reach: 'Clientes en Latinoamérica, Estados Unidos y España',
+  reach: 'Atendemos negocios en Latinoamérica, Estados Unidos y España',
   email: '',
   phone: '',
   address: '',
