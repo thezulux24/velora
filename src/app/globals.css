@@ -626,6 +626,8 @@ p {
   position: absolute;
   top: 8px;
   left: 50%;
+  /* posicionado no crece con su texto: sin esto el neón se sale de la placa en anchos medianos */
+  width: max-content;
   transform: translate(-50%, -6px) rotate(-3deg);
   z-index: 2;
 }
