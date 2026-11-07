@@ -569,7 +569,6 @@ p {
   align-content: center;
 }
 .hero h1 {
-  font-family: var(--font-inline);
   font-size: clamp(2.6rem, 5.6vw, 5.4rem);
   line-height: 0.98;
 }
